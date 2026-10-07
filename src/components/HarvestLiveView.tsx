@@ -8,13 +8,15 @@ interface HarvestLiveViewProps {
   onInspectProduce: (lot: ProduceLot) => void;
   onReserveProduce: (lot: ProduceLot) => void;
   onOpenScanner?: () => void;
+  searchQuery?: string;
 }
 
 export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
   setActiveView,
   onInspectProduce,
   onReserveProduce,
-  onOpenScanner
+  onOpenScanner,
+  searchQuery = ''
 }) => {
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all');
   const [selectedTierId, setSelectedTierId] = useState<string>('tier-medium');
@@ -22,8 +24,13 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
   const [allocationConfirmed, setAllocationConfirmed] = useState(false);
 
   const filteredLots = PRODUCE_LOTS.filter((lot) => {
-    if (activeCategory === 'all') return true;
-    return lot.category === activeCategory;
+    const matchesCategory = activeCategory === 'all' || lot.category === activeCategory;
+    const q = searchQuery.trim().toLowerCase();
+    const matchesSearch = !q ||
+      lot.name.toLowerCase().includes(q) ||
+      lot.hindiName.toLowerCase().includes(q) ||
+      lot.simpleDescription.toLowerCase().includes(q);
+    return matchesCategory && matchesSearch;
   });
 
   const selectedTier = BASKET_TIERS.find((t) => t.id === selectedTierId) || BASKET_TIERS[1];
@@ -97,7 +104,7 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
 
   return (
     <div className="relative w-full overflow-hidden">
-      {/* Background Fiber Wave Aesthetics (Visuvate Style) */}
+      {/* Background Fiber Wave Aesthetics */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-60">
         <svg
           className="w-full h-full min-h-[1400px] text-emerald-400/20"
@@ -123,7 +130,7 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
       </div>
 
       {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-8 pt-24 sm:pt-32 pb-12 max-w-7xl mx-auto w-full">
+      <section className="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-8 pt-20 sm:pt-28 pb-12 max-w-7xl mx-auto w-full">
         {/* Simple Notification Pill */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -149,11 +156,10 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
           transition={{ duration: 0.6, delay: 0.1 }}
           className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight max-w-5xl leading-[1.1] mb-5 font-normal text-neutral-900 dark:text-white"
         >
-          Pure Natural Vegetables.<br />
-          <span className="italic font-normal text-emerald-500 dark:text-emerald-400 underline decoration-emerald-400/40 decoration-wavy decoration-1 underline-offset-8">
-            Picked Fresh
+          Pure Taste, Just as<br />
+          <span className="italic font-normal text-emerald-600 dark:text-emerald-400 underline decoration-amber-400 decoration-wavy decoration-2 underline-offset-8">
+            Nature Intended.
           </span>
-          {' '}at Sunrise.
         </motion.h1>
 
         {/* Clear, simple subtitle in formal English */}
@@ -161,12 +167,48 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm sm:text-base md:text-lg text-neutral-700 dark:text-neutral-300 max-w-2xl mb-8 leading-relaxed font-light"
+          className="text-sm sm:text-base md:text-lg text-neutral-700 dark:text-neutral-300 max-w-2xl mb-6 leading-relaxed font-light"
         >
           100% chemical-free organic vegetables grown in rich living soil in Gujarat. Plucked fresh every morning and delivered directly to your doorstep in 4 hours.
         </motion.p>
 
-        {/* Action Buttons */}
+        {/* Organic India Sample Reference Trust Badges */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mb-8 text-neutral-800 dark:text-neutral-200"
+        >
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm text-xs font-semibold">
+            <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[14px]">eco</span>
+            </div>
+            <span>Certified Organic</span>
+          </div>
+
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm text-xs font-semibold">
+            <div className="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[14px]">nutrition</span>
+            </div>
+            <span>Crunchy &amp; Sweet</span>
+          </div>
+
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm text-xs font-semibold">
+            <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[14px]">sanitizer</span>
+            </div>
+            <span>0.00% Pesticides</span>
+          </div>
+
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm text-xs font-semibold">
+            <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[14px]">local_shipping</span>
+            </div>
+            <span>Doorstep in 4 Hours</span>
+          </div>
+        </motion.div>
+
+        {/* Action Buttons & Portal Shortcuts */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -179,7 +221,7 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
               if (el) el.scrollIntoView({ behavior: 'smooth' });
               else setActiveView('subscription-baskets');
             }}
-            className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-full bg-emerald-400 text-black font-bold text-xs sm:text-sm shadow-lg hover:bg-emerald-300 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
           >
             <span>Order Weekly Basket (from ₹499)</span>
             <span className="material-symbols-outlined text-[18px]">shopping_bag</span>
@@ -187,25 +229,36 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
 
           <button
             onClick={() => setActiveView('the-plots')}
-            className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-full bg-white/10 dark:bg-white/10 backdrop-blur-xl text-neutral-900 dark:text-white font-semibold text-xs sm:text-sm border border-neutral-300 dark:border-white/15 hover:border-emerald-400/40 hover:bg-emerald-400/10 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-full bg-white dark:bg-white/10 text-neutral-900 dark:text-white font-semibold text-xs sm:text-sm border border-neutral-300 dark:border-white/15 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shadow-sm"
           >
-            <span className="material-symbols-outlined text-emerald-500 dark:text-emerald-400 text-[18px]">travel_explore</span>
+            <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-[18px]">travel_explore</span>
             <span>View Our Farm Plots</span>
           </button>
 
-          {onOpenScanner && (
-            <button
-              onClick={onOpenScanner}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 font-semibold text-xs sm:text-sm border border-emerald-400/40 hover:bg-emerald-400 hover:text-black transition-all cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-[18px]">qr_code_scanner</span>
-              <span>Scan Box QR</span>
-            </button>
-          )}
+          <button
+            onClick={() => setActiveView('agent-panel')}
+            className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 font-bold text-xs sm:text-sm border border-amber-400/50 hover:bg-amber-500 hover:text-black transition-all cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[18px]">two_wheeler</span>
+            <span>Agent Route Portal</span>
+          </button>
+
+          <button
+            onClick={() => setActiveView('admin-panel')}
+            className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 font-bold text-xs sm:text-sm border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-200 transition-all cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+            <span>Farm Admin</span>
+          </button>
         </motion.div>
 
         {/* Category Filters */}
-        <div className="mt-8 inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-full bg-black/60 dark:bg-black/60 border border-white/10 backdrop-blur-xl">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="mt-8 inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-full bg-black/60 dark:bg-black/60 border border-white/10 backdrop-blur-xl"
+        >
           <button
             onClick={() => setActiveCategory('all')}
             className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
@@ -246,16 +299,29 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
           >
             Gourds & Roots (लौकी, गाजर)
           </button>
-        </div>
+        </motion.div>
       </section>
 
-      {/* 3D Floating Perspective Vegetable Cards Section */}
-      <section className="relative z-10 w-full px-4 sm:px-8 py-6" id="plots-stage">
+      {/* 3D Floating Perspective Vegetable Cards Section (With Scroll-Driven Loading Animation) */}
+      <motion.section
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.1 }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+        className="relative z-10 w-full px-4 sm:px-8 py-6"
+        id="plots-stage"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="relative w-full rounded-3xl bg-neutral-900/90 dark:bg-neutral-950/90 backdrop-blur-3xl p-5 sm:p-8 md:p-10 border border-white/10 shadow-2xl">
             
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-white/10 gap-3">
+            <motion.div
+              initial={{ opacity: 0, x: -25 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-white/10 gap-3"
+            >
               <div>
                 <div className="flex items-center gap-2 text-emerald-400 text-xs uppercase tracking-wider font-semibold mb-1">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -268,13 +334,17 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
               <p className="text-xs text-neutral-300 max-w-sm font-sans">
                 Grown on our natural farm in Mehsana, Gujarat. Zero cold storage, delivered in pure cotton crates.
               </p>
-            </div>
+            </motion.div>
 
-            {/* Responsive Card Grid with Rupee Pricing */}
+            {/* Responsive Card Grid with Staggered Scroll-Driven Loading */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredLots.map((lot) => (
-                <div
+              {filteredLots.map((lot, idx) => (
+                <motion.div
                   key={lot.id}
+                  initial={{ opacity: 0, y: 35, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: false, amount: 0.15 }}
+                  transition={{ duration: 0.5, delay: (idx % 3) * 0.1, ease: 'easeOut' }}
                   className="group relative rounded-2xl bg-neutral-900 p-5 backdrop-blur-2xl border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:border-emerald-400/60 shadow-xl flex flex-col justify-between"
                 >
                   {lot.isPopular && (
@@ -359,12 +429,18 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
                       <span>Add Basket</span>
                     </button>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
 
-            {/* Farm Status Bar in Simple English */}
-            <div className="mt-10 rounded-2xl bg-black/60 backdrop-blur-xl p-4 border border-white/10 flex flex-wrap items-center justify-between gap-4">
+            {/* Farm Status Bar in Simple English (Scroll Loaded) */}
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.6 }}
+              className="mt-10 rounded-2xl bg-black/60 backdrop-blur-xl p-4 border border-white/10 flex flex-wrap items-center justify-between gap-4"
+            >
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
                   <span className="material-symbols-outlined text-[18px]">wb_sunny</span>
@@ -389,17 +465,29 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
               >
                 View Farm Weather &rarr;
               </button>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 8-Card Pure Food Promise (Simple English) */}
-      <section className="relative z-10 px-4 sm:px-8 py-16 max-w-7xl mx-auto w-full">
+      {/* 8-Card Pure Food Promise (Loaded on Scroll) */}
+      <motion.section
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.15 }}
+        transition={{ duration: 0.7 }}
+        className="relative z-10 px-4 sm:px-8 py-16 max-w-7xl mx-auto w-full"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           
           {/* Left Feature Card */}
-          <div className="lg:col-span-5 rounded-3xl bg-neutral-900/90 dark:bg-neutral-950 p-8 sm:p-10 flex flex-col justify-between border border-white/10 shadow-xl">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-5 rounded-3xl bg-neutral-900/90 dark:bg-neutral-950 p-8 sm:p-10 flex flex-col justify-between border border-white/10 shadow-xl"
+          >
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-400/20">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -422,13 +510,17 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
                 Check Today&apos;s Harvest Batch
               </button>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right 8-Promise Grid */}
+          {/* Right 8-Promise Grid (Staggered Animation on Scroll) */}
           <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-3 bg-black/40 p-3 rounded-3xl border border-white/10 backdrop-blur-xl">
-            {farmPromises.map((p) => (
-              <button
+            {farmPromises.map((p, idx) => (
+              <motion.button
                 key={p.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
                 onClick={() => setSelectedCert(selectedCert === p.id ? null : p.id)}
                 className={`p-4 rounded-2xl transition-all text-center space-y-2 cursor-pointer border flex flex-col items-center justify-center ${
                   selectedCert === p.id
@@ -441,7 +533,7 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
                 </div>
                 <div className="text-xs text-white font-semibold leading-tight">{p.title}</div>
                 <div className="text-[10px] text-neutral-400">{p.sub}</div>
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -472,10 +564,16 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
             </button>
           </motion.div>
         )}
-      </section>
+      </motion.section>
 
-      {/* Marquee Ticker */}
-      <div className="w-full py-4 bg-black/80 border-y border-white/10 overflow-hidden relative">
+      {/* Marquee Ticker (Scroll Loaded) */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+        className="w-full py-4 bg-black/80 border-y border-white/10 overflow-hidden relative"
+      >
         <div className="animate-marquee flex items-center space-x-8 text-neutral-400 text-xs uppercase tracking-widest whitespace-nowrap">
           <span className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 100% Chemical-Free Vegetables
@@ -501,12 +599,25 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Zero Cold Storage Warehousing
           </span>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Weekly Basket Section in Indian Rupees (₹) */}
-      <section className="relative z-10 px-4 sm:px-8 py-20 max-w-7xl mx-auto w-full" id="basket-builder-section">
+      {/* Weekly Basket Section in Indian Rupees (₹) (Loaded on Scroll) */}
+      <motion.section
+        initial={{ opacity: 0, y: 45 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.15 }}
+        transition={{ duration: 0.7 }}
+        className="relative z-10 px-4 sm:px-8 py-20 max-w-7xl mx-auto w-full"
+        id="basket-builder-section"
+      >
         <div className="rounded-3xl bg-neutral-900/90 dark:bg-neutral-950 p-6 sm:p-12 border border-white/10 shadow-2xl relative overflow-hidden">
-          <div className="max-w-3xl mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.5 }}
+            className="max-w-3xl mb-10"
+          >
             <span className="text-emerald-400 text-xs uppercase tracking-wider font-semibold block mb-2">
               Weekly Home Vegetable Delivery · India
             </span>
@@ -516,15 +627,19 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
             <p className="text-sm md:text-base text-neutral-300 font-light mt-3 leading-relaxed">
               Get clean, chemical-free vegetables harvested every Tuesday and Friday morning. No advance contract lock-in. Cancel or pause anytime.
             </p>
-          </div>
+          </motion.div>
 
-          {/* 3 Tier Cards in Rupees (₹) */}
+          {/* 3 Tier Cards in Rupees (₹) (Staggered Animation on Scroll) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            {BASKET_TIERS.map((tier) => {
+            {BASKET_TIERS.map((tier, idx) => {
               const isSelected = selectedTierId === tier.id;
               return (
-                <div
+                <motion.div
                   key={tier.id}
+                  initial={{ opacity: 0, y: 35, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: false, amount: 0.2 }}
+                  transition={{ duration: 0.5, delay: idx * 0.12 }}
                   onClick={() => setSelectedTierId(tier.id)}
                   className={`rounded-2xl p-6 backdrop-blur-xl transition-all duration-300 flex flex-col justify-between cursor-pointer border relative ${
                     isSelected
@@ -558,8 +673,8 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
                     </p>
 
                     <ul className="space-y-2 text-xs text-neutral-200">
-                      {tier.features.map((feat, idx) => (
-                        <li key={idx} className="flex items-center gap-2">
+                      {tier.features.map((feat, fidx) => (
+                        <li key={fidx} className="flex items-center gap-2">
                           <span className="material-symbols-outlined text-emerald-400 text-[16px]">
                             check_circle
                           </span>
@@ -580,13 +695,19 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
                       {isSelected ? 'Selected Active Basket' : 'Choose This Basket'}
                     </span>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
 
-          {/* Action Bar */}
-          <div className="p-5 sm:p-6 rounded-2xl bg-black/60 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-5">
+          {/* Action Bar (Loaded on Scroll) */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.5 }}
+            className="p-5 sm:p-6 rounded-2xl bg-black/60 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-5"
+          >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-emerald-400/20 flex items-center justify-center text-emerald-400 shrink-0">
                 <span className="material-symbols-outlined text-[24px]">local_shipping</span>
@@ -612,9 +733,9 @@ export const HarvestLiveView: React.FC<HarvestLiveViewProps> = ({
             >
               {allocationConfirmed ? 'Basket Booked! Opening Customizer...' : 'Confirm & Customize Basket'}
             </button>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 };

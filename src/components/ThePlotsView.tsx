@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { FARM_PLOTS } from '../data/mockData';
 import { FarmPlot } from '../types';
 
@@ -8,7 +9,12 @@ export const ThePlotsView: React.FC = () => {
   return (
     <div className="pt-24 sm:pt-28 pb-20 px-4 sm:px-8 max-w-7xl mx-auto space-y-12">
       {/* Title */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6"
+      >
         <div>
           <span className="text-emerald-400 font-mono text-xs uppercase tracking-wider block mb-1">
             MEHSANA FARMLAND · GUJARAT, INDIA
@@ -20,12 +26,18 @@ export const ThePlotsView: React.FC = () => {
             Interactive view of our four main vegetable plots, natural tube-well water canal, and desi cow compost shelter.
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Map Layout */}
+      {/* Map Layout (Loaded on Scroll) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left: SVG Farm Map */}
-        <div className="lg:col-span-8 rounded-3xl bg-neutral-950 p-6 border border-white/10 relative overflow-hidden flex flex-col justify-between min-h-[460px]">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.15 }}
+          transition={{ duration: 0.6 }}
+          className="lg:col-span-8 rounded-3xl bg-neutral-950 p-6 border border-white/10 relative overflow-hidden flex flex-col justify-between min-h-[460px] shadow-2xl"
+        >
           <div className="flex justify-between items-center z-10 text-xs">
             <span className="px-3 py-1 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 font-mono">
               GPS: Mehsana Organic Belt, Gujarat
@@ -135,10 +147,16 @@ export const ThePlotsView: React.FC = () => {
             <span>Click any plot to see soil moisture &amp; crop details</span>
             <span className="text-emerald-400 font-mono">100% Chemical-Free Land</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Right: Selected Plot Details */}
-        <div className="lg:col-span-4 rounded-3xl bg-neutral-950 p-6 sm:p-8 border border-white/10 space-y-6 flex flex-col justify-between">
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false, amount: 0.15 }}
+          transition={{ duration: 0.6 }}
+          className="lg:col-span-4 rounded-3xl bg-neutral-950 p-6 sm:p-8 border border-white/10 space-y-6 flex flex-col justify-between shadow-2xl"
+        >
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="px-3 py-1 rounded-full bg-emerald-400/20 text-emerald-400 font-mono text-xs font-bold">
@@ -180,7 +198,7 @@ export const ThePlotsView: React.FC = () => {
               We use traditional cow dung compost, neem oil sprays, and Jeevamrutha bio-culture. No chemical urea or synthetic fertilizers.
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

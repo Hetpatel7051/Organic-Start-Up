@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 
 interface TraceabilityViewProps {
   onOpenScanner?: () => void;
@@ -47,7 +48,12 @@ export const TraceabilityView: React.FC<TraceabilityViewProps> = ({ onOpenScanne
   return (
     <div className="pt-24 sm:pt-28 pb-20 px-4 sm:px-8 max-w-7xl mx-auto space-y-12">
       {/* Title */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6"
+      >
         <div>
           <span className="text-emerald-400 font-mono text-xs uppercase tracking-wider block mb-1">
             FARM PURITY &amp; HARVEST ORIGIN CHECK · INDIA
@@ -59,10 +65,16 @@ export const TraceabilityView: React.FC<TraceabilityViewProps> = ({ onOpenScanne
             Every basket comes with a verification code. Check the exact farmer name, Gujarat farm plot, morning picking time, and clean lab test results.
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Search Bar */}
-      <div className="rounded-3xl bg-neutral-950 p-6 sm:p-8 border border-white/10 space-y-4">
+      {/* Search Bar (Loaded on Scroll) */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+        className="rounded-3xl bg-neutral-950 p-6 sm:p-8 border border-white/10 space-y-4 shadow-xl"
+      >
         <h3 className="font-serif text-xl text-white">Check Your Crate Code or Scan with Camera</h3>
         <p className="text-xs text-neutral-400">
           Enter the code printed on your wooden crate tag (e.g. #0x89F4) or scan the QR code using your phone camera.
@@ -117,11 +129,17 @@ export const TraceabilityView: React.FC<TraceabilityViewProps> = ({ onOpenScanne
             </button>
           ))}
         </div>
-      </div>
+      </motion.div>
 
-      {/* Verified Record Display */}
+      {/* Verified Record Display (Loaded on Scroll) */}
       {verifiedResult && (
-        <div className="rounded-3xl bg-neutral-950 p-6 sm:p-10 border border-emerald-400/40 shadow-2xl space-y-8 animate-fadeIn">
+        <motion.div
+          initial={{ opacity: 0, y: 35, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.15 }}
+          transition={{ duration: 0.6 }}
+          className="rounded-3xl bg-neutral-950 p-6 sm:p-10 border border-emerald-400/40 shadow-2xl space-y-8"
+        >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
             <div>
               <div className="flex items-center gap-2">
@@ -142,43 +160,33 @@ export const TraceabilityView: React.FC<TraceabilityViewProps> = ({ onOpenScanne
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1">
-              <span className="text-neutral-400 block font-mono text-[10px]">VEGETABLES IN BATCH</span>
-              <strong className="text-white text-sm font-serif block">{verifiedResult.vegetables}</strong>
-              <span className="text-emerald-400 font-medium">Hand sorted and quality checked</span>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1">
-              <span className="text-neutral-400 block font-mono text-[10px]">LEAD FARMER</span>
-              <strong className="text-white text-sm block">{verifiedResult.farmer}</strong>
-              <span className="text-neutral-300">18 years practicing organic natural farming</span>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1">
-              <span className="text-neutral-400 block font-mono text-[10px]">SUNRISE PICKING TIME</span>
-              <strong className="text-emerald-400 text-sm font-mono block">{verifiedResult.harvestTime}</strong>
-              <span className="text-neutral-300">Plucked while morning dew is fresh</span>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1">
-              <span className="text-neutral-400 block font-mono text-[10px]">FARM LOCATION</span>
-              <strong className="text-white text-sm block">{verifiedResult.plot}</strong>
-              <span className="text-neutral-300">Living compost soil, zero chemical spray</span>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1">
-              <span className="text-neutral-400 block font-mono text-[10px]">LAB TEST RESULT</span>
-              <strong className="text-emerald-400 text-sm font-mono block">{verifiedResult.labTest}</strong>
-              <span className="text-neutral-300">Zero synthetic chemical detected</span>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1">
-              <span className="text-neutral-400 block font-mono text-[10px]">FARM TO KITCHEN TIMELINE</span>
-              <strong className="text-white text-sm block">{verifiedResult.journey}</strong>
-              <span className="text-emerald-300">Zero cold storage warehouse delay</span>
-            </div>
+            {[
+              { label: 'VEGETABLES IN BATCH', value: verifiedResult.vegetables, sub: 'Hand sorted and quality checked', isSerif: true },
+              { label: 'LEAD FARMER', value: verifiedResult.farmer, sub: '18 years practicing organic natural farming' },
+              { label: 'SUNRISE PICKING TIME', value: verifiedResult.harvestTime, sub: 'Plucked while morning dew is fresh', isEmerald: true, isMono: true },
+              { label: 'FARM LOCATION', value: verifiedResult.plot, sub: 'Living compost soil, zero chemical spray' },
+              { label: 'LAB TEST RESULT', value: verifiedResult.labTest, sub: 'Zero synthetic chemical detected', isEmerald: true, isMono: true },
+              { label: 'FARM TO KITCHEN TIMELINE', value: verifiedResult.journey, sub: 'Zero cold storage warehouse delay', isSubEmerald: true }
+            ].map((item, idx) => (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.15 }}
+                transition={{ duration: 0.45, delay: idx * 0.08 }}
+                className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1"
+              >
+                <span className="text-neutral-400 block font-mono text-[10px]">{item.label}</span>
+                <strong className={`text-white text-sm block ${item.isSerif ? 'font-serif' : ''} ${item.isEmerald ? 'text-emerald-400 font-mono' : ''}`}>
+                  {item.value}
+                </strong>
+                <span className={item.isSubEmerald ? 'text-emerald-300' : item.isEmerald ? 'text-neutral-300' : 'text-neutral-300'}>
+                  {item.sub}
+                </span>
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );

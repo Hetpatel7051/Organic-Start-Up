@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { FARM_WEATHER, FARM_PLOTS } from '../data/mockData';
 
 export const TelemetryView: React.FC = () => {
@@ -26,10 +27,24 @@ export const TelemetryView: React.FC = () => {
     return 'none';
   };
 
+  const weatherMetrics = [
+    { title: 'AIR TEMP', icon: 'thermostat', val: `${FARM_WEATHER.airTemp}°C`, sub: FARM_WEATHER.airStatus, iconColor: 'text-emerald-400' },
+    { title: 'HUMIDITY', icon: 'water_drop', val: `${FARM_WEATHER.humidity}%`, sub: 'Morning Dew', iconColor: 'text-emerald-300' },
+    { title: 'SUNSHINE', icon: 'wb_sunny', val: `${FARM_WEATHER.sunlightHours} hrs`, sub: 'Natural Sunlight', iconColor: 'text-yellow-400' },
+    { title: 'SOIL MOISTURE', icon: 'grass', val: '65%', sub: 'Optimal Compost Soil', iconColor: 'text-emerald-400' },
+    { title: 'VILLAGE AIR', icon: 'air', val: 'AQI 28', sub: 'Pure Village Air', iconColor: 'text-cyan-400' },
+    { title: 'GENTLE WIND', icon: 'wind_power', val: '4.5 km/h', sub: 'Cool Morning', iconColor: 'text-blue-300' },
+  ];
+
   return (
     <div className="pt-24 sm:pt-28 pb-20 px-4 sm:px-8 max-w-7xl mx-auto space-y-12">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6"
+      >
         <div>
           <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs uppercase tracking-wider mb-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
@@ -52,93 +67,39 @@ export const TelemetryView: React.FC = () => {
             <span className="text-emerald-400 font-semibold text-[11px]">All Online &amp; Active</span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* 6 Weather Cards in Simple Everyday Words */}
+      {/* 6 Weather Cards with Staggered Scroll-Driven Loading */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div className="p-4 rounded-2xl bg-neutral-900 border border-white/10 space-y-1">
-          <div className="flex items-center justify-between text-neutral-400 text-xs">
-            <span>AIR TEMP</span>
-            <span className="material-symbols-outlined text-emerald-400 text-[18px]">thermostat</span>
-          </div>
-          <div className="font-mono text-2xl text-white font-bold">
-            {FARM_WEATHER.airTemp}°<span className="text-sm font-normal text-neutral-400">C</span>
-          </div>
-          <div className="text-[11px] text-emerald-400">
-            {FARM_WEATHER.airStatus}
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-neutral-900 border border-white/10 space-y-1">
-          <div className="flex items-center justify-between text-neutral-400 text-xs">
-            <span>HUMIDITY</span>
-            <span className="material-symbols-outlined text-emerald-300 text-[18px]">water_drop</span>
-          </div>
-          <div className="font-mono text-2xl text-white font-bold">
-            {FARM_WEATHER.humidity}%
-          </div>
-          <div className="text-[11px] text-neutral-300">
-            Morning Dew
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-neutral-900 border border-white/10 space-y-1">
-          <div className="flex items-center justify-between text-neutral-400 text-xs">
-            <span>SUNSHINE</span>
-            <span className="material-symbols-outlined text-yellow-400 text-[18px]">wb_sunny</span>
-          </div>
-          <div className="font-mono text-2xl text-white font-bold">
-            {FARM_WEATHER.sunlightHours} <span className="text-sm font-normal text-neutral-400">hrs/day</span>
-          </div>
-          <div className="text-[11px] text-neutral-300">
-            Natural Sunlight
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-neutral-900 border border-white/10 space-y-1">
-          <div className="flex items-center justify-between text-neutral-400 text-xs">
-            <span>SOIL MOISTURE</span>
-            <span className="material-symbols-outlined text-emerald-400 text-[18px]">grass</span>
-          </div>
-          <div className="font-mono text-xl text-white font-bold">
-            65%
-          </div>
-          <div className="text-[11px] text-emerald-400">
-            Optimal Soil
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-neutral-900 border border-white/10 space-y-1">
-          <div className="flex items-center justify-between text-neutral-400 text-xs">
-            <span>VILLAGE AIR</span>
-            <span className="material-symbols-outlined text-cyan-400 text-[18px]">air</span>
-          </div>
-          <div className="font-mono text-xl text-white font-bold">
-            AQI 28
-          </div>
-          <div className="text-[11px] text-emerald-300">
-            Pure &amp; Clean
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-neutral-900 border border-white/10 space-y-1">
-          <div className="flex items-center justify-between text-neutral-400 text-xs">
-            <span>GENTLE WIND</span>
-            <span className="material-symbols-outlined text-blue-300 text-[18px]">wind_power</span>
-          </div>
-          <div className="font-mono text-xl text-white font-bold">
-            4.5 <span className="text-xs font-normal text-neutral-400">km/h</span>
-          </div>
-          <div className="text-[11px] text-neutral-300">
-            Cool Morning
-          </div>
-        </div>
+        {weatherMetrics.map((m, idx) => (
+          <motion.div
+            key={m.title}
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.45, delay: idx * 0.07, ease: 'easeOut' }}
+            className="p-4 rounded-2xl bg-neutral-900 border border-white/10 space-y-1 shadow-sm"
+          >
+            <div className="flex items-center justify-between text-neutral-400 text-xs">
+              <span>{m.title}</span>
+              <span className={`material-symbols-outlined ${m.iconColor} text-[18px]`}>{m.icon}</span>
+            </div>
+            <div className="font-mono text-2xl text-white font-bold">{m.val}</div>
+            <div className="text-[11px] text-emerald-400">{m.sub}</div>
+          </motion.div>
+        ))}
       </div>
 
-      {/* Main Farm Live Stage */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* Main Farm Live Stage (Loaded on Scroll) */}
+      <motion.div
+        initial={{ opacity: 0, y: 35 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.15 }}
+        transition={{ duration: 0.6 }}
+        className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
+      >
         {/* Left: Live Farm Camera Feed */}
-        <div className="lg:col-span-8 rounded-3xl bg-neutral-950 p-6 border border-white/10 space-y-5">
+        <div className="lg:col-span-8 rounded-3xl bg-neutral-950 p-6 border border-white/10 space-y-5 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
@@ -187,7 +148,6 @@ export const TelemetryView: React.FC = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
 
-            {/* Live Camera Overlays */}
             <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[11px] text-white font-mono">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span>1080p Solar Cam 1 · 30 FPS</span>
@@ -209,10 +169,9 @@ export const TelemetryView: React.FC = () => {
           </p>
         </div>
 
-        {/* Right: Clean Well-Water Drip Control & Village Audio */}
+        {/* Right: Clean Well-Water Drip Control */}
         <div className="lg:col-span-4 space-y-6">
-          {/* Well-Water Drip Card */}
-          <div className="rounded-3xl bg-neutral-950 p-6 border border-white/10 space-y-4">
+          <div className="rounded-3xl bg-neutral-950 p-6 border border-white/10 space-y-4 shadow-xl">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center">
                 <span className="material-symbols-outlined text-[20px]">water</span>
@@ -254,8 +213,7 @@ export const TelemetryView: React.FC = () => {
             </button>
           </div>
 
-          {/* Natural Farm Ambience */}
-          <div className="rounded-3xl bg-neutral-950 p-6 border border-white/10 space-y-3">
+          <div className="rounded-3xl bg-neutral-950 p-6 border border-white/10 space-y-3 shadow-xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <span className="material-symbols-outlined text-emerald-400 text-[20px]">volume_up</span>
@@ -283,10 +241,16 @@ export const TelemetryView: React.FC = () => {
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Farm Plots Health Status Table */}
-      <div className="rounded-3xl bg-neutral-950 p-6 sm:p-8 border border-white/10 space-y-4">
+      {/* Farm Plots Health Status Table (Loaded on Scroll) */}
+      <motion.div
+        initial={{ opacity: 0, y: 35 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.15 }}
+        transition={{ duration: 0.6 }}
+        className="rounded-3xl bg-neutral-950 p-6 sm:p-8 border border-white/10 space-y-4 shadow-xl"
+      >
         <h3 className="font-serif text-xl sm:text-2xl text-white">
           All 4 Farm Plots · Current Crop &amp; Soil Report
         </h3>
@@ -327,7 +291,7 @@ export const TelemetryView: React.FC = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -4,9 +4,22 @@ export type ActiveView =
   | 'the-plots'
   | 'subscription-baskets'
   | 'traceability'
-  | 'lab-reports';
+  | 'lab-reports'
+  | 'admin-panel'
+  | 'agent-panel';
 
 export type CategoryFilter = 'all' | 'daily' | 'leafy' | 'gourd-roots';
+
+export type UserRole = 'customer' | 'agent' | 'admin';
+
+export interface UserProfile {
+  phone: string;
+  name: string;
+  role: UserRole;
+  email?: string;
+  location: string;
+  activeOrdersCount?: number;
+}
 
 export interface ProduceLot {
   id: string;
@@ -66,4 +79,20 @@ export interface FarmPlot {
   soilType: string;
   status: string;
   liveCamera: string;
+}
+
+export interface DeliveryOrder {
+  id: string;
+  customerName: string;
+  phone: string;
+  address: string;
+  tierName: string;
+  items: string[];
+  amountRupees: number;
+  status: 'Harvested' | 'Assigned' | 'Out for Delivery' | 'Delivered';
+  agentName: string;
+  deliveryDate: string;
+  crateCode: string;
+  paymentMode: 'Cash on Delivery' | 'UPI at Doorstep' | 'Paid Online';
+  isPaid: boolean;
 }

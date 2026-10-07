@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { BASKET_TIERS, PRODUCE_LOTS } from '../data/mockData';
 import { BasketTier } from '../types';
 
@@ -55,7 +56,12 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
   return (
     <div className="pt-24 sm:pt-28 pb-20 px-4 sm:px-8 max-w-7xl mx-auto space-y-12">
       {/* Title */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6"
+      >
         <div>
           <span className="text-emerald-400 font-mono text-xs uppercase tracking-wider block mb-1">
             DOORSTEP DELIVERY ACROSS INDIA · 100% CHEMICAL FREE
@@ -67,15 +73,19 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
             Pure, chemical-free vegetables harvested early morning and brought directly to your home in India. No advance contract lock-in. Pause or cancel anytime.
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      {/* 3 Tier Cards in Rupees (₹) */}
+      {/* 3 Tier Cards with Scroll Loading Animation */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {BASKET_TIERS.map((tier) => {
+        {BASKET_TIERS.map((tier, idx) => {
           const isSelected = selectedTier.id === tier.id;
           return (
-            <div
+            <motion.div
               key={tier.id}
+              initial={{ opacity: 0, y: 35, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: idx * 0.12 }}
               onClick={() => setSelectedTier(tier)}
               className={`rounded-3xl p-6 sm:p-8 backdrop-blur-2xl transition-all duration-300 flex flex-col justify-between cursor-pointer border relative ${
                 isSelected
@@ -112,8 +122,8 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
                 </p>
 
                 <div className="space-y-2 border-t border-white/10 pt-4">
-                  {tier.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-xs text-neutral-200">
+                  {tier.features.map((feat, fidx) => (
+                    <div key={fidx} className="flex items-center gap-2 text-xs text-neutral-200">
                       <span className="material-symbols-outlined text-emerald-400 text-[16px]">check_circle</span>
                       <span>{feat}</span>
                     </div>
@@ -133,13 +143,19 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
                   {isSelected ? 'Active Plan Selected' : 'Select This Plan'}
                 </button>
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>
 
-      {/* Vegetable Customizer Section */}
-      <div className="rounded-3xl bg-neutral-950 p-6 sm:p-10 border border-white/10 space-y-8">
+      {/* Vegetable Customizer Section (Loaded on Scroll) */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.1 }}
+        transition={{ duration: 0.6 }}
+        className="rounded-3xl bg-neutral-950 p-6 sm:p-10 border border-white/10 space-y-8 shadow-2xl"
+      >
         <div>
           <div className="flex items-center gap-2 text-emerald-400 text-xs uppercase tracking-wider font-semibold mb-1">
             <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
@@ -155,11 +171,15 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
 
         {/* Veggie Toggles */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-          {PRODUCE_LOTS.map((lot) => {
+          {PRODUCE_LOTS.map((lot, idx) => {
             const isIncluded = selectedLots.includes(lot.id);
             return (
-              <div
+              <motion.div
                 key={lot.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.1 }}
+                transition={{ duration: 0.4, delay: (idx % 5) * 0.05 }}
                 onClick={() => toggleLot(lot.id)}
                 className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
                   isIncluded
@@ -189,7 +209,7 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
                   <span>{lot.weightText}</span>
                   <span className="text-emerald-400 font-semibold">{lot.freshnessScore}% Fresh</span>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -262,11 +282,15 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
             {isOrdering ? 'Confirming Your Weekly Basket...' : 'Book Weekly Basket (₹' + selectedTier.priceRupees + ')'}
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Completed Order Modal/Receipt */}
       {completedOrder && (
-        <div className="p-6 sm:p-8 rounded-3xl bg-emerald-950/40 border border-emerald-400/50 space-y-4 animate-fadeIn">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="p-6 sm:p-8 rounded-3xl bg-emerald-950/40 border border-emerald-400/50 space-y-4 shadow-2xl"
+        >
           <div className="flex items-center gap-3">
             <span className="material-symbols-outlined text-emerald-400 text-[32px]">check_circle</span>
             <div>
@@ -297,7 +321,7 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
           <p className="text-xs text-neutral-300 font-light">
             Our farmers in Mehsana will harvest your vegetables at 5:45 AM on {completedOrder.deliveryDay.split(' ')[1]}. Your crate will carry a QR verification tag with your family name.
           </p>
-        </div>
+        </motion.div>
       )}
     </div>
   );

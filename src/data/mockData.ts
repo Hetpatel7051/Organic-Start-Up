@@ -1,4 +1,4 @@
-import { ProduceLot, BasketTier, FarmWeather, FarmPlot } from '../types';
+import { ProduceLot, BasketTier, FarmWeather, FarmPlot, DeliveryOrder, UserProfile } from '../types';
 
 export const PRODUCE_LOTS: ProduceLot[] = [
   {
@@ -326,3 +326,93 @@ export const FARM_PLOTS: FarmPlot[] = [
     liveCamera: 'Drone Patrol Active'
   }
 ];
+
+export const INITIAL_ORDERS: DeliveryOrder[] = [
+  {
+    id: 'ORD-9821',
+    customerName: 'Aarav Sharma',
+    phone: '+91 98251 43210',
+    address: 'B-402, Shivalik Residency, Bodakdev, Ahmedabad',
+    tierName: 'Family Regular Basket',
+    items: ['Desi Tamatar', 'Palak', 'Bhindi', 'Phool Gobi', 'Methi-Dhaniya bundle'],
+    amountRupees: 899,
+    status: 'Out for Delivery',
+    agentName: 'Ramesh Patel',
+    deliveryDate: 'Today (Tuesday) 7:00 AM',
+    crateCode: '#0x89F4',
+    paymentMode: 'Cash on Delivery',
+    isPaid: false
+  },
+  {
+    id: 'ORD-9822',
+    customerName: 'Priya Joshi',
+    phone: '+91 97140 88291',
+    address: '14, Nilkanth Green Bungalows, Mehsana North',
+    tierName: 'Small Family Basket',
+    items: ['Desi Tamatar', 'Baby Palak', 'Desi Kheera', 'Shimla Mirch'],
+    amountRupees: 499,
+    status: 'Delivered',
+    agentName: 'Ramesh Patel',
+    deliveryDate: 'Today (Tuesday) 6:45 AM',
+    crateCode: '#0x77BC',
+    paymentMode: 'UPI at Doorstep',
+    isPaid: true
+  },
+  {
+    id: 'ORD-9823',
+    customerName: 'Dr. Kirit Varma',
+    phone: '+91 94260 11984',
+    address: 'A-12, Doctor Enclave, Sindhu Bhavan Road, Ahmedabad',
+    tierName: 'Grand Kitchen Basket',
+    items: ['Desi Tamatar', 'Palak', 'Bhindi', 'Lauki', 'Baingan', 'Gajar', 'Mustard Oil'],
+    amountRupees: 1499,
+    status: 'Assigned',
+    agentName: 'Suresh Prajapati',
+    deliveryDate: 'Today (Tuesday) 7:30 AM',
+    crateCode: '#0x63EA',
+    paymentMode: 'Paid Online',
+    isPaid: true
+  },
+  {
+    id: 'ORD-9824',
+    customerName: 'Neha Patel',
+    phone: '+91 98980 45123',
+    address: '702, Maple Tree Garden Homes, Thaltej, Ahmedabad',
+    tierName: 'Family Regular Basket',
+    items: ['Desi Tamatar', 'Bhindi', 'Methi', 'Phool Gobi', 'Lauki'],
+    amountRupees: 899,
+    status: 'Harvested',
+    agentName: 'Ramesh Patel',
+    deliveryDate: 'Friday 7:00 AM',
+    crateCode: '#0x91F8',
+    paymentMode: 'Cash on Delivery',
+    isPaid: false
+  }
+];
+
+export const MOCK_USERS: UserProfile[] = [
+  {
+    phone: '+91 98765 43210',
+    name: 'Aarav Sharma',
+    role: 'customer',
+    location: 'Ahmedabad, Gujarat',
+    activeOrdersCount: 2
+  },
+  {
+    phone: '+91 98240 12345',
+    name: 'Ramesh Patel',
+    role: 'agent',
+    email: 'agent.ramesh@auraterra.in',
+    location: 'Mehsana Delivery Hub',
+    activeOrdersCount: 6
+  },
+  {
+    phone: '+91 99090 99090',
+    name: 'Somabhai Patel (Admin)',
+    role: 'admin',
+    email: 'admin@auraterra.in',
+    location: 'Mehsana Farm HQ',
+    activeOrdersCount: 24
+  }
+];
+
