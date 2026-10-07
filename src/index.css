@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@layer base {
+  :root {
+    --bg-main: #fbfbf9;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #f4f5f1;
+    --bg-surface-glass: rgba(255, 255, 255, 0.85);
+    --border-subtle: rgba(16, 185, 129, 0.18);
+    --border-hairline: rgba(0, 0, 0, 0.08);
+    --text-primary: #121815;
+    --text-muted: #5a6660;
+    --accent-emerald: #059669;
+    --accent-emerald-glow: rgba(5, 150, 105, 0.25);
+    --accent-mint: #10b981;
+    --card-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
+  }
+
+  .dark {
+    --bg-main: #111413;
+    --bg-surface: #191c1b;
+    --bg-surface-elevated: #282b29;
+    --bg-surface-glass: rgba(25, 28, 27, 0.82);
+    --border-subtle: rgba(78, 222, 163, 0.22);
+    --border-hairline: rgba(255, 255, 255, 0.08);
+    --text-primary: #e2e3e0;
+    --text-muted: #bbcabf;
+    --accent-emerald: #4edea3;
+    --accent-emerald-glow: rgba(78, 222, 163, 0.35);
+    --accent-mint: #68fcbf;
+    --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+/* Custom animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-hairline);
+}
+
+.glass-panel-glow {
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 10px 35px var(--accent-emerald-glow);
+}
+
+/* 3D perspective helpers */
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+/* Hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

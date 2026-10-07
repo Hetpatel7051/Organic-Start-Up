@@ -1,0 +1,6 @@
+{
+  "name": "Aura Terra — Estate Provenance & Terroir Telemetry",
+  "description": "Hyper-monitored micro-climate biodynamic agriculture, real-time field telemetry, spatial terroir inspection, and cryptographic harvest provenance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
