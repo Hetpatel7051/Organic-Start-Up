@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { BASKET_TIERS, PRODUCE_LOTS } from '../data/mockData';
+import { BASKET_TIERS, PRODUCE_LOTS, BRAND_INFO } from '../data/mockData';
 import { BasketTier } from '../types';
 
 interface SubscriptionBasketsViewProps {
@@ -20,7 +20,7 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
   ]);
   const [deliveryDay, setDeliveryDay] = useState<'tuesday' | 'friday'>('tuesday');
   const [familyTag, setFamilyTag] = useState('My Family Kitchen Basket');
-  const [deliveryCity, setDeliveryCity] = useState('Ahmedabad / Mehsana, Gujarat');
+  const [deliveryCity, setDeliveryCity] = useState('Visnagar / Mehsana / Ahmedabad');
   const [isOrdering, setIsOrdering] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<any | null>(null);
 
@@ -39,7 +39,7 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
     setTimeout(() => {
       setIsOrdering(false);
       const order = {
-        orderId: `AT-IND-${Math.floor(10000 + Math.random() * 90000)}`,
+        orderId: `PK-${Math.floor(10000 + Math.random() * 90000)}`,
         tier: selectedTier.name,
         priceRupees: selectedTier.priceRupees,
         deliveryDay: deliveryDay === 'tuesday' ? 'Every Tuesday Morning (7:00 AM)' : 'Every Friday Morning (7:00 AM)',
@@ -60,19 +60,29 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6"
+        className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#E3DAC6] dark:border-[#283C2C] pb-6"
       >
         <div>
-          <span className="text-emerald-400 font-mono text-xs uppercase tracking-wider block mb-1">
-            DOORSTEP DELIVERY ACROSS INDIA · 100% CHEMICAL FREE
+          <span className="text-[#C86D3B] dark:text-[#E0854E] font-mono text-xs uppercase tracking-wider font-bold block mb-1">
+            🌱 KAMANA FARM TO DOORSTEP · SPU STUDENT STARTUP
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-neutral-900 dark:text-white">
-            Choose Your Weekly Vegetable Basket
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-[#1E3F20] dark:text-[#FAF5EA]">
+            Weekly PureKhetar Vegetable Baskets
           </h1>
-          <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 max-w-2xl mt-2 font-light">
-            Pure, chemical-free vegetables harvested early morning and brought directly to your home in India. No advance contract lock-in. Pause or cancel anytime.
+          <p className="text-xs sm:text-sm text-[#556357] dark:text-[#CBD5CD] max-w-2xl mt-2 font-light">
+            Pure, 100% zero-chemical vegetables harvested early morning in Kamana, Visnagar and brought directly to your home. No lock-in contracts. Cancel or modify anytime.
           </p>
         </div>
+
+        <a
+          href={BRAND_INFO.whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] text-white text-xs font-bold shadow-md hover:bg-[#20BA5C] transition-all"
+        >
+          <span className="material-symbols-outlined text-[17px]">chat</span>
+          <span>WhatsApp Help: {BRAND_INFO.phone}</span>
+        </a>
       </motion.div>
 
       {/* 3 Tier Cards with Scroll Loading Animation */}
@@ -87,60 +97,64 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
               viewport={{ once: false, amount: 0.2 }}
               transition={{ duration: 0.5, delay: idx * 0.12 }}
               onClick={() => setSelectedTier(tier)}
-              className={`rounded-3xl p-6 sm:p-8 backdrop-blur-2xl transition-all duration-300 flex flex-col justify-between cursor-pointer border relative ${
+              className={`rounded-3xl p-6 sm:p-8 transition-all duration-300 flex flex-col justify-between cursor-pointer border relative ${
                 isSelected
-                  ? 'bg-neutral-900 border-emerald-400 shadow-[0_20px_50px_rgba(78,222,163,0.2)] scale-[1.02]'
-                  : 'bg-neutral-950/80 hover:bg-neutral-900/60 border-white/10'
+                  ? 'bg-[#1E3F20] text-[#FAF7EE] border-[#1E3F20] shadow-xl scale-[1.02]'
+                  : 'bg-[#FFFDF9] dark:bg-[#18261B] text-[#1C271E] dark:text-[#FAF5EA] border-[#E3DAC6] dark:border-[#283C2C] hover:border-[#1E3F20]'
               }`}
             >
               {tier.isPopular && (
-                <span className="absolute -top-3 right-6 px-3 py-0.5 rounded-full bg-emerald-400 text-black text-[10px] font-bold uppercase tracking-wider">
-                  Recommended for Families
+                <span className="absolute -top-3 right-6 px-3 py-0.5 rounded-full bg-[#C86D3B] text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
+                  Most Families Choose This
                 </span>
               )}
 
               <div>
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <h3 className="font-serif text-xl sm:text-2xl text-white font-bold">{tier.name}</h3>
-                    <span className="text-xs text-emerald-400 font-medium block mt-0.5">{tier.hindiSubtitle}</span>
+                    <h3 className="font-serif text-xl sm:text-2xl font-bold leading-snug">{tier.name}</h3>
+                    <span className={`text-xs font-semibold block mt-0.5 ${isSelected ? 'text-[#E5A93C]' : 'text-[#C86D3B] dark:text-[#E0854E]'}`}>
+                      {tier.hindiSubtitle}
+                    </span>
                   </div>
-                  <div className="text-right">
-                    <span className="font-mono text-emerald-400 text-2xl sm:text-3xl font-bold">
+                  <div className="text-right shrink-0 ml-2">
+                    <span className={`font-mono text-2xl sm:text-3xl font-bold ${isSelected ? 'text-[#E5A93C]' : 'text-[#1E3F20] dark:text-[#65A46B]'}`}>
                       ₹{tier.priceRupees}
                     </span>
-                    <span className="text-xs text-neutral-400 block">/week</span>
+                    <span className={`text-xs block ${isSelected ? 'text-[#E4EDE1]' : 'text-[#79887C]'}`}>/week</span>
                   </div>
                 </div>
 
-                <div className="text-xs text-neutral-300 font-mono mb-4">
+                <div className={`text-xs font-mono mb-4 ${isSelected ? 'text-[#E4EDE1]' : 'text-[#5E6D60] dark:text-[#A8B8AB]'}`}>
                   {tier.weightKg} · {tier.idealFor}
                 </div>
 
-                <p className="text-xs text-neutral-300 font-light leading-relaxed mb-6">
+                <p className={`text-xs font-light leading-relaxed mb-6 ${isSelected ? 'text-[#E4EDE1]' : 'text-[#556357] dark:text-[#CBD5CD]'}`}>
                   {tier.simpleDescription}
                 </p>
 
-                <div className="space-y-2 border-t border-white/10 pt-4">
+                <div className="space-y-2 border-t border-black/10 dark:border-white/10 pt-4">
                   {tier.features.map((feat, fidx) => (
-                    <div key={fidx} className="flex items-center gap-2 text-xs text-neutral-200">
-                      <span className="material-symbols-outlined text-emerald-400 text-[16px]">check_circle</span>
+                    <div key={fidx} className="flex items-center gap-2 text-xs">
+                      <span className={`material-symbols-outlined text-[16px] ${isSelected ? 'text-[#E5A93C]' : 'text-[#1E3F20] dark:text-[#65A46B]'}`}>
+                        check_circle
+                      </span>
                       <span>{feat}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="mt-8 pt-4 border-t border-white/10">
+              <div className="mt-8 pt-4 border-t border-black/10 dark:border-white/10">
                 <button
                   type="button"
                   className={`w-full py-3 rounded-full text-xs font-bold transition-all ${
                     isSelected
-                      ? 'bg-emerald-400 text-black shadow-md'
-                      : 'bg-white/10 text-neutral-300 hover:bg-white/20 hover:text-white'
+                      ? 'bg-[#FAF7EE] text-[#1E3F20] shadow-md'
+                      : 'bg-[#EFE8D8] dark:bg-[#203223] text-[#1E3F20] dark:text-[#FAF5EA] hover:bg-[#E2D8C3]'
                   }`}
                 >
-                  {isSelected ? 'Active Plan Selected' : 'Select This Plan'}
+                  {isSelected ? 'Active Plan Selected' : 'Choose This Basket'}
                 </button>
               </div>
             </motion.div>
@@ -148,82 +162,76 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
         })}
       </div>
 
-      {/* Vegetable Customizer Section (Loaded on Scroll) */}
+      {/* Basket Customizer Box */}
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.1 }}
+        viewport={{ once: false, amount: 0.15 }}
         transition={{ duration: 0.6 }}
-        className="rounded-3xl bg-neutral-950 p-6 sm:p-10 border border-white/10 space-y-8 shadow-2xl"
+        className="rounded-3xl bg-[#FFFDF9] dark:bg-[#18261B] p-6 sm:p-10 border border-[#E3DAC6] dark:border-[#283C2C] shadow-lg space-y-8"
       >
         <div>
-          <div className="flex items-center gap-2 text-emerald-400 text-xs uppercase tracking-wider font-semibold mb-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-            Weekly Customizer · Select Your Vegetables
-          </div>
-          <h2 className="font-serif text-2xl sm:text-3xl text-white">
-            Customize What Goes in Your {selectedTier.name}
+          <span className="text-xs font-mono uppercase tracking-wider text-[#C86D3B] dark:text-[#E0854E] font-bold">
+            Step 2: Customize Your Weekly Produce
+          </span>
+          <h2 className="font-serif text-2xl sm:text-3xl text-[#1E3F20] dark:text-[#FAF5EA] mt-1">
+            Pick Your Preferred Vegetables for {selectedTier.name}
           </h2>
-          <p className="text-xs sm:text-sm text-neutral-400 font-light mt-1">
-            Toggle which vegetables you and your family prefer this week. Freshly picked at 5:45 AM.
+          <p className="text-xs sm:text-sm text-[#556357] dark:text-[#CBD5CD] font-light mt-1">
+            Select items you love most. We will pack extra bunches of your favored produce from our Kamana farm.
           </p>
         </div>
 
-        {/* Veggie Toggles */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-          {PRODUCE_LOTS.map((lot, idx) => {
-            const isIncluded = selectedLots.includes(lot.id);
+        {/* Veggie Toggle Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          {PRODUCE_LOTS.map((lot) => {
+            const isChecked = selectedLots.includes(lot.id);
             return (
-              <motion.div
+              <button
                 key={lot.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.1 }}
-                transition={{ duration: 0.4, delay: (idx % 5) * 0.05 }}
+                type="button"
                 onClick={() => toggleLot(lot.id)}
-                className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
-                  isIncluded
-                    ? 'bg-neutral-900 border-emerald-400 shadow-[0_4px_20px_rgba(78,222,163,0.15)]'
-                    : 'bg-white/5 border-white/5 opacity-60 hover:opacity-100'
+                className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                  isChecked
+                    ? 'bg-[#EBF2EB] dark:bg-[#203423] border-[#1E3F20] dark:border-[#4ADE80] shadow-sm'
+                    : 'bg-[#FAF7EE] dark:bg-[#141F16] border-[#E3DAC6] dark:border-[#283C2C] opacity-65 hover:opacity-100'
                 }`}
               >
-                <div className="flex items-start justify-between mb-2">
-                  <span className={`material-symbols-outlined text-[20px] ${isIncluded ? 'text-emerald-400' : 'text-neutral-500'}`}>
-                    {isIncluded ? 'check_box' : 'check_box_outline_blank'}
+                <div className="flex justify-between items-start mb-2">
+                  <span className={`material-symbols-outlined text-[18px] ${isChecked ? 'text-[#1E3F20] dark:text-[#4ADE80]' : 'text-neutral-400'}`}>
+                    {isChecked ? 'check_box' : 'check_box_outline_blank'}
                   </span>
-                  <span className="font-mono text-[11px] text-emerald-400 font-bold">
+                  <span className="text-[10px] font-mono text-[#C86D3B] dark:text-[#E0854E] font-bold">
                     ₹{lot.pricePerKg}/kg
                   </span>
                 </div>
-
                 <div>
-                  <span className="font-serif text-sm text-white font-bold block leading-tight">
+                  <span className="text-xs font-bold text-[#1E3F20] dark:text-[#FAF5EA] block leading-snug">
                     {lot.name}
                   </span>
-                  <span className="text-[11px] text-emerald-300 block mt-0.5">
-                    {lot.hindiName.split(' ')[0]}
+                  <span className="text-[10px] text-[#556357] dark:text-[#CBD5CD]">
+                    {lot.hindiName.split('/')[0]}
                   </span>
                 </div>
-
-                <div className="text-[10px] text-neutral-400 mt-2 pt-2 border-t border-white/5 flex justify-between">
-                  <span>{lot.weightText}</span>
-                  <span className="text-emerald-400 font-semibold">{lot.freshnessScore}% Fresh</span>
-                </div>
-              </motion.div>
+              </button>
             );
           })}
         </div>
 
-        {/* Delivery Preferences Form */}
-        <div className="p-6 rounded-2xl bg-white/5 border border-white/5 grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+        {/* Delivery Options & Checkout */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-[#E3DAC6] dark:border-[#283C2C]">
           <div>
-            <label className="text-neutral-400 block mb-2 font-medium">Weekly Delivery Morning:</label>
+            <label className="text-xs font-semibold text-[#1E3F20] dark:text-[#FAF5EA] block mb-1">
+              Select Delivery Day
+            </label>
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={() => setDeliveryDay('tuesday')}
-                className={`flex-1 py-2.5 px-3 rounded-xl border text-center transition-all cursor-pointer ${
-                  deliveryDay === 'tuesday' ? 'bg-emerald-400 text-black font-bold border-emerald-400' : 'bg-white/5 text-white border-white/10'
+                className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  deliveryDay === 'tuesday'
+                    ? 'bg-[#1E3F20] text-[#FAF7EE]'
+                    : 'bg-[#EFE8D8] dark:bg-[#203223] text-[#1E3F20] dark:text-[#FAF5EA]'
                 }`}
               >
                 Every Tuesday (7 AM)
@@ -231,8 +239,10 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
               <button
                 type="button"
                 onClick={() => setDeliveryDay('friday')}
-                className={`flex-1 py-2.5 px-3 rounded-xl border text-center transition-all cursor-pointer ${
-                  deliveryDay === 'friday' ? 'bg-emerald-400 text-black font-bold border-emerald-400' : 'bg-white/5 text-white border-white/10'
+                className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  deliveryDay === 'friday'
+                    ? 'bg-[#1E3F20] text-[#FAF7EE]'
+                    : 'bg-[#EFE8D8] dark:bg-[#203223] text-[#1E3F20] dark:text-[#FAF5EA]'
                 }`}
               >
                 Every Friday (7 AM)
@@ -241,88 +251,91 @@ export const SubscriptionBasketsView: React.FC<SubscriptionBasketsViewProps> = (
           </div>
 
           <div>
-            <label className="text-neutral-400 block mb-2 font-medium">Family Label on Wooden Crate:</label>
-            <input
-              type="text"
-              value={familyTag}
-              onChange={(e) => setFamilyTag(e.target.value)}
-              placeholder="e.g. Patel Family Kitchen"
-              className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-400 text-xs font-sans"
-            />
-          </div>
-
-          <div>
-            <label className="text-neutral-400 block mb-2 font-medium">Delivery City / Region:</label>
+            <label className="text-xs font-semibold text-[#1E3F20] dark:text-[#FAF5EA] block mb-1">
+              Delivery City / Area
+            </label>
             <input
               type="text"
               value={deliveryCity}
               onChange={(e) => setDeliveryCity(e.target.value)}
-              placeholder="e.g. Ahmedabad / Mehsana"
-              className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-400 text-xs font-sans"
+              className="w-full bg-[#FAF7EE] dark:bg-[#141F16] border border-[#DED4BE] dark:border-[#283C2C] rounded-xl px-3 py-2 text-xs text-[#1C271E] dark:text-[#FAF5EA] focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold text-[#1E3F20] dark:text-[#FAF5EA] block mb-1">
+              Basket Tag / Note
+            </label>
+            <input
+              type="text"
+              value={familyTag}
+              onChange={(e) => setFamilyTag(e.target.value)}
+              className="w-full bg-[#FAF7EE] dark:bg-[#141F16] border border-[#DED4BE] dark:border-[#283C2C] rounded-xl px-3 py-2 text-xs text-[#1C271E] dark:text-[#FAF5EA] focus:outline-none"
             />
           </div>
         </div>
 
-        {/* Final Order Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/10">
+        {/* Order Summary & Final Submit */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-[#EFE8D8] dark:bg-[#1A261D] border border-[#DFD5BE] dark:border-[#283C2C]">
           <div>
-            <div className="text-white text-base font-serif font-bold">
-              Total Weekly Price: <span className="font-mono text-emerald-400 text-2xl font-bold">₹{selectedTier.priceRupees}</span>
+            <div className="text-sm font-bold text-[#1E3F20] dark:text-[#FAF5EA]">
+              Plan: {selectedTier.name} · ₹{selectedTier.priceRupees} / week
             </div>
-            <span className="text-xs text-neutral-400">
-              Includes {selectedLots.length} vegetable types · Free morning doorstep delivery · Cash/UPI on Delivery
-            </span>
+            <div className="text-xs text-[#556357] dark:text-[#CBD5CD]">
+              {selectedLots.length} items customized · Free morning delivery from Kamana farm · Cash &amp; UPI upon delivery
+            </div>
           </div>
 
-          <button
-            onClick={handleCheckout}
-            disabled={isOrdering}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-emerald-400 hover:bg-emerald-300 text-black font-bold text-xs tracking-wider transition-all duration-300 cursor-pointer shadow-lg"
-          >
-            {isOrdering ? 'Confirming Your Weekly Basket...' : 'Book Weekly Basket (₹' + selectedTier.priceRupees + ')'}
-          </button>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <a
+              href={`${BRAND_INFO.whatsappLink}&text=Hi%20PureKhetar!%20I%20want%20to%20order%20the%20${encodeURIComponent(selectedTier.name)}%20(₹${selectedTier.priceRupees}/week)%20for%20${encodeURIComponent(deliveryCity)}.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 sm:flex-none px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20BA5C] text-white font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md"
+            >
+              <span className="material-symbols-outlined text-[16px]">chat</span>
+              <span>WhatsApp Order</span>
+            </a>
+
+            <button
+              onClick={handleCheckout}
+              disabled={isOrdering}
+              className="flex-1 sm:flex-none px-7 py-3 rounded-full bg-[#1E3F20] hover:bg-[#163519] text-[#FAF7EE] font-bold text-xs tracking-wider transition-all cursor-pointer shadow-md"
+            >
+              {isOrdering ? 'Booking Basket...' : 'Confirm Basket Online'}
+            </button>
+          </div>
         </div>
+
+        {/* Completed Order Confirmation Banner */}
+        {completedOrder && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="p-6 rounded-3xl bg-[#EBF2EB] dark:bg-[#1F3323] border border-[#74A878] space-y-3 text-xs"
+          >
+            <div className="flex items-center gap-2 text-[#1E3F20] dark:text-[#4ADE80] font-bold text-sm">
+              <span className="material-symbols-outlined text-[22px]">verified</span>
+              <span>Weekly Basket Booked Successfully! Order #{completedOrder.orderId}</span>
+            </div>
+            <p className="text-[#556357] dark:text-[#CBD5CD]">
+              Thank you for supporting <strong>PureKhetar</strong>! Your fresh harvest will be plucked at sunrise and delivered on <strong>{completedOrder.deliveryDay}</strong> to <strong>{completedOrder.city}</strong>.
+            </p>
+            <div className="pt-2 flex gap-3 text-[#1E3F20] dark:text-[#FAF5EA] font-semibold">
+              <span>Amount: ₹{completedOrder.priceRupees} (Pay upon doorstep inspection)</span>
+              <span>•</span>
+              <a
+                href={`${BRAND_INFO.whatsappLink}&text=Hi%20PureKhetar!%20I%20just%20placed%20order%20%23${completedOrder.orderId}.`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#C86D3B] underline"
+              >
+                Confirm on WhatsApp &rarr;
+              </a>
+            </div>
+          </motion.div>
+        )}
       </motion.div>
-
-      {/* Completed Order Modal/Receipt */}
-      {completedOrder && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="p-6 sm:p-8 rounded-3xl bg-emerald-950/40 border border-emerald-400/50 space-y-4 shadow-2xl"
-        >
-          <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-emerald-400 text-[32px]">check_circle</span>
-            <div>
-              <h3 className="font-serif text-2xl text-white font-bold">
-                Weekly Vegetable Basket Confirmed!
-              </h3>
-              <p className="text-xs text-emerald-300 font-mono">
-                Order Reference: {completedOrder.orderId} · {completedOrder.timestamp}
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 text-xs">
-            <div className="p-3.5 rounded-xl bg-black/50 border border-white/10">
-              <span className="text-neutral-400 block">BASKET TIER</span>
-              <strong className="text-white text-sm">{completedOrder.tier}</strong>
-            </div>
-            <div className="p-3.5 rounded-xl bg-black/50 border border-white/10">
-              <span className="text-neutral-400 block">DELIVERY SCHEDULE</span>
-              <strong className="text-emerald-400 text-sm">{completedOrder.deliveryDay}</strong>
-            </div>
-            <div className="p-3.5 rounded-xl bg-black/50 border border-white/10">
-              <span className="text-neutral-400 block">PAYMENT MODE</span>
-              <strong className="text-white text-sm">₹{completedOrder.priceRupees} · Pay on Delivery (UPI / Cash)</strong>
-            </div>
-          </div>
-
-          <p className="text-xs text-neutral-300 font-light">
-            Our farmers in Mehsana will harvest your vegetables at 5:45 AM on {completedOrder.deliveryDay.split(' ')[1]}. Your crate will carry a QR verification tag with your family name.
-          </p>
-        </motion.div>
-      )}
     </div>
   );
 };

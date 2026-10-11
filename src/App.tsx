@@ -83,18 +83,18 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative selection:bg-emerald-500 selection:text-white bg-[#fafaf7] dark:bg-[#0c0f0d] text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
+    <div className="min-h-screen flex flex-col relative selection:bg-[#1E3F20] selection:text-[#FAF7EE] bg-[#FAF7EE] dark:bg-[#111A13] text-[#1C271E] dark:text-[#FAF5EA] transition-colors duration-300">
       {/* Global Real-Time Scroll Progress Indicator */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-amber-400 to-emerald-400 origin-left z-[70] shadow-[0_0_12px_rgba(16,185,129,0.8)] pointer-events-none"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1E3F20] via-[#C86D3B] to-[#3E6B41] origin-left z-[70] shadow-[0_0_12px_rgba(30,63,32,0.8)] pointer-events-none"
         style={{ scaleX }}
       />
 
-      {/* Dynamic Ambient Background Elements */}
+      {/* Dynamic Ambient Background Elements (Creamy Linen & Herbal Greens) */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-[140px] opacity-70"></div>
-        <div className="absolute top-1/3 -right-48 w-[600px] h-[600px] bg-amber-500/5 dark:bg-emerald-400/10 rounded-full blur-[160px] opacity-40"></div>
-        <div className="absolute bottom-0 left-[-10%] w-[700px] h-[500px] bg-emerald-600/5 dark:bg-black/90 rounded-full blur-[120px] opacity-90"></div>
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-[#1E3F20]/10 dark:bg-[#1E3F20]/20 rounded-full blur-[140px] opacity-70"></div>
+        <div className="absolute top-1/3 -right-48 w-[600px] h-[600px] bg-[#C86D3B]/10 dark:bg-[#C86D3B]/15 rounded-full blur-[160px] opacity-40"></div>
+        <div className="absolute bottom-0 left-[-10%] w-[700px] h-[500px] bg-[#2E5A33]/10 dark:bg-black/90 rounded-full blur-[120px] opacity-80"></div>
       </div>
 
       {/* Main Top Navigation Bar (Organic India Sample Styled) */}
@@ -172,9 +172,9 @@ export default function App() {
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20 }}
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full bg-neutral-900 border border-emerald-500 text-white shadow-2xl flex items-center gap-2 text-xs font-mono"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full bg-[#1E3F20] border border-[#E5A93C] text-[#FAF7EE] shadow-2xl flex items-center gap-2 text-xs font-mono"
         >
-          <span className="material-symbols-outlined text-emerald-400 text-[18px]">eco</span>
+          <span className="material-symbols-outlined text-[#E5A93C] text-[18px]">eco</span>
           <span>{toastMessage}</span>
         </motion.div>
       )}
